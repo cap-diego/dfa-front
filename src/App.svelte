@@ -1,12 +1,8 @@
 <script>
+	import { Graficador } from './dfaGraphTools'
 	let transitions = [{}];
-	let states = [];
-	let nodes = new Set();
-	let initialState = null;
 	let finalStates = [];
-	let alphabet = [];
 	let dfaGraphContainer;
-	let dfaMinGraphContainer;
 	let dfaGraph;
 	function addTransition(ev) {
 		if (!canAddTransition())
@@ -26,50 +22,17 @@
 	function minimize() {
 		if (canAddTransition) {
 			try {
-				initialState = transitions[0].from
-				buildStatesFromTransitions()
-				remarkInitialState()
-				let data = {
-					edges: transitions,
-					nodes: states
-				}
-				dfaGraph = new vis.Network(dfaGraphContainer, data, options);
+				let graficador = new Graficador()
+				dfaGraph = graficador.createGraph(transitions, finalStates, dfaGraphContainer);
+				let dfa = graficador.getDfa();
+				console.log({dfa})
 			} catch (err) {
 				console.log("Error tratando de construir la red: " + err)
 			}
 
 		}
 	}
-	function remarkInitialState() {
-		states.forEach(q => {
-			if (q.id == initialState) {
-				q.borderWidth = 5
-				q.color = {background: "green"}
-				return
-			}
-		})
-	}
-	function buildStatesFromTransitions() {
-		transitions.forEach( ({from, to, label}) => {
-			let oldSize = nodes.size
-			nodes.add(from)
-			let newSize = nodes.size
-			if (newSize > oldSize)
-				states.push({id: from, label:from})
-			oldSize = newSize
-			nodes.add(to)
-			newSize = nodes.size
-			if (newSize > oldSize)
-				states.push({id: to, label:to})
-		})
-	}
-    const options = {
-		edges: {
-			arrows: {
-				to: true
-			}
-		}
-	};
+
 	
 </script>
 
@@ -90,5 +53,5 @@
 </main>
 <div id="dfa-graph-comparison" class="flex justify-between w-full h-full border-2 border-indigo-200 rounded">
 	<div bind:this={dfaGraphContainer} class="w-3/4 h-full border-0 border-green-600 rounded"></div>
-	<div bind:this={dfaMinGraphContainer} class="w-3/4 h-full border-0 border-green-600 rounded"></div>
+	<!-- <div bind:this={dfaMinGraphContainer} class="w-3/4 h-full border-0 border-green-600 rounded"></div> -->
 </div>
