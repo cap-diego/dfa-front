@@ -1,8 +1,18 @@
 <script>
-	import { Graficador } from './dfaGraphTools'
+	import { Graficador } from './dfaGraphTools';
+	import { APIMinimize}  from './dfaAPITools';
 	let transitions = [{}];
 	let dfaGraphContainer;
 	let dfaGraph;
+	let graficador;
+	let dfa;
+	let dfaMin;
+	let dfaMinGraph;
+	let dfaMinGraphContainer;
+
+	// Watchers
+	$: drawDfa(transitions, dfaGraphContainer)
+
 	function addTransition(ev) {
 		if (!canAddTransition())
 			return
@@ -15,20 +25,41 @@
 				return true
 		})
 	}
-	function minimize() {
-		if (canAddTransition()) {
-			try {
-				let graficador = new Graficador()
-				dfaGraph = graficador.createGraph(transitions, dfaGraphContainer);
-				let dfa = graficador.getDfa();
-				console.log({dfa})
-			} catch (err) {
-				console.log("Error tratando de construir la red: " + err)
-			}
-
+	function obtenerDfa() {
+		try {
+			return graficador.getDfa();
+		} catch (err) {
+			console.log("Error tratando de obtener el dfa del graficador: "+ err)
 		}
 	}
-	
+	async function minimize() {
+		if (!canAddTransition())
+			return
+		dfa = obtenerDfa();
+		try {
+			dfaMin = await APIMinimize(dfa);
+		}catch (err) {
+			console.log("Error enviando petición de minimización: " + err)
+			return
+		}
+		try {
+			dfaMinGraph = drawDfa(dfaMin.transitions, dfaMinGraphContainer, dfaMin.initialState.toString());
+		}catch(err) {
+			console.log("Error al dibujar el minimizado: " + err)
+		}
+		
+	}
+
+	function drawDfa(transitions, container, initialState) {
+		if (!canAddTransition())
+			return
+		try {
+			graficador = new Graficador({ initialState, transitions })
+			dfaGraph = graficador.createGraph(container);
+		} catch (err) {
+			console.log("Error tratando de construir la red: " + err)
+		}
+	}
 </script>
 
 <main class="flex justify-center">
@@ -49,6 +80,6 @@
 	</div>
 </main>
 <div id="dfa-graph-comparison" class="flex justify-between w-full h-full border-2 border-indigo-200 rounded">
-	<div bind:this={dfaGraphContainer} class="w-1/2 h-full border-0 border-green-600 rounded"></div>
-	<!-- <div bind:this={dfaMinGraphContainer} class="w-3/4 h-full border-0 border-green-600 rounded"></div> -->
+	<div bind:this={dfaGraphContainer} class="w-1/2 h-1/2 border-0 border-green-600 rounded"></div>
+	<div bind:this={dfaMinGraphContainer} class="w-1/2 h-1/2 border-0 border-green-600 rounded"></div>
 </div>

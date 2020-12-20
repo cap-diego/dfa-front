@@ -1,12 +1,12 @@
 class Graficador {
 
-    constructor() {
-        this.states = [];
-        this.transitions;
-        this.initialState = null;
+    constructor({initialState, states, transitions, alphabet, finalStates}) {
+        this.states = states || [];
+        this.delta = transitions;
+        this.initialState = initialState;
         this.nodes = new Set();
-        this.finalStates = new Set();
-        this.alphabet = new Set();
+        this.finalStates = finalStates || new Set();
+        this.alphabet = alphabet || new Set();
         this.options = {
             edges: {
                 arrows: {
@@ -19,7 +19,7 @@ class Graficador {
         this.remarkNodeWithStyle(this.initialState, 5, "green")
     }
     remarkFinalStates() {
-        this.transitions.forEach( ({from, to, fromIsFinal, toIsFinal}) => {
+        this.delta.forEach( ({from, to, fromIsFinal, toIsFinal}) => {
             if (fromIsFinal)
                 this.remarkNodeWithStyle(from, 2, "gray")
             if (toIsFinal) 
@@ -34,7 +34,7 @@ class Graficador {
         }
     }
     buildStatesFromTransitions() {
-        this.transitions.forEach( ({from, to, label}) => {
+        this.delta.forEach( ({from, to, label}) => {
             let oldSize = this.nodes.size
             this.nodes.add(from)
             let newSize = this.nodes.size
@@ -48,30 +48,31 @@ class Graficador {
         })
     }
 
-
-    createGraph(transitions, dfaGraphContainer) {
-        this.initialState = transitions[0].from
-        this.transitions = [...transitions]
+    createGraph(dfaGraphContainer) {
+        console.log(this.delta)
+        if (!this.initialState) this.initialState = this.delta[0].from
+        this.delta = [...this.delta]
         this.buildStatesFromTransitions()
         this.remarkInitialState()
         this.buildAlphabet()
         this.buildFinalStates()
         this.remarkFinalStates()
         let data = {
-            edges: this.transitions,
+            edges: this.delta,
             nodes: this.states
         }
         return new vis.Network(dfaGraphContainer, data, this.options)
     }
 
     buildAlphabet() {
-        this.transitions.forEach( ({label}) => {
+        if (this.alphabet.size > 0 ) return
+        this.delta.forEach( ({label}) => {
             this.alphabet.add(label)
         })
-        return this.alphabet;
     }
     buildFinalStates() {
-        this.transitions.forEach( ({ fromIsFinal, toIsFinal, from, to }) => {
+        if (this.delta.size > 0) return
+        this.delta.forEach( ({ fromIsFinal, toIsFinal, from, to }) => {
             if (fromIsFinal)
                 this.finalStates.add(from)
             if (toIsFinal)
@@ -82,7 +83,7 @@ class Graficador {
         try {
             let dfa = {
                 "states": this.nodes,
-                "transitions": this.transitions,
+                "transitions": this.delta,
                 "initialState": this.initialState,
                 "finalStates": this.finalStates,
                 "alphabet": this.alphabet,
