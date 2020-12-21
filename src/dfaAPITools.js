@@ -1,5 +1,5 @@
-let API_URL = __app.env.isProd? __app.env.API_URL : "http://localhost:8080";
-API_URL = __app.env.API_URL === undefined? "http://18.228.136.243:8080" : API_URL;
+let API_URL = __app.env.isProd? __app.env.API_URL : "https://localhost";
+API_URL = __app.env.API_URL === undefined? "https://dfa-min.diegobuceta.com" : API_URL;
 console.log(__app.env.isProd)
 console.log(__app.env.API_URL)
 console.log(API_URL);
