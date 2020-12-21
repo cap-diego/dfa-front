@@ -47,9 +47,7 @@ class Graficador {
                 this.states.push({id: to, label:to})
         })
     }
-
     createGraph(dfaGraphContainer) {
-        console.log(this.delta)
         if (!this.initialState) this.initialState = this.delta[0].from
         this.delta = [...this.delta]
         this.buildStatesFromTransitions()

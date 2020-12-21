@@ -56,21 +56,22 @@ function convertTransitionsToApiSchema(transitions) {
 }
 function dfaFromSchemaToObj(data) {
     return {
-        "transitions": convertTransitionsFromApiSchema(data.delta, data.initialState, data.finalStates),
+        "transitions": convertTransitionsFromApiSchema(data.delta, data.initialState, data.finalStates, data.states),
         "initialState": data.initialState.toString(),
         "finalStates": toStrs(data.finalStates),
         "states": toStrs(data.states),
         ...data}
 }
 
-function convertTransitionsFromApiSchema(transitions, initialState, finalStates) {
+function convertTransitionsFromApiSchema(transitions, initialState, finalStates, states) {
     let convertedTransitions = []
     for (let [from, v] of Object.entries(transitions)) {
         for (let [label, to] of Object.entries(v)) {
             convertedTransitions.push({ from: from.toString(), label, to: to.toString(), fromIsFinal: from in finalStates, toIsFinal: to in finalStates});
         }
     }
-    return convertedTransitions;
+    return mergeEdgesWithSameEndpoints(convertedTransitions, states)
+    // return convertedTransitions;
 }
 
 function APIMinimize(dfa) {
@@ -92,4 +93,23 @@ function APIMinimize(dfa) {
         throw Error(err)
     })
 }
+
+function mergeEdgesWithSameEndpoints(transitions, states) {
+    let mergedTransitions = [...transitions];
+    states.forEach(state => {
+        let prev = "";
+        let nuevaTransicion = null;
+        mergedTransitions = mergedTransitions.filter(({from, to, label}) => {
+            if (from === to && to === state.toString()) {
+                prev = prev.concat(", ", label)
+                nuevaTransicion = {from: from, to: to, label: prev}
+            } else 
+                return {from, to, label}
+        })
+        if (nuevaTransicion)
+            mergedTransitions = [nuevaTransicion, ...mergedTransitions]
+    });
+    return mergedTransitions;
+}
+
 export { APIMinimize };

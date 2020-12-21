@@ -42,12 +42,7 @@
 			console.log("Error enviando petición de minimización: " + err)
 			return
 		}
-		try {
-			dfaMinGraph = drawDfa(dfaMin.transitions, dfaMinGraphContainer, dfaMin.initialState.toString());
-		}catch(err) {
-			console.log("Error al dibujar el minimizado: " + err)
-		}
-		
+		dfaMinGraph = drawDfa(dfaMin.transitions, dfaMinGraphContainer, dfaMin.initialState.toString());
 	}
 
 	function drawDfa(transitions, container, initialState) {
@@ -80,6 +75,6 @@
 	</div>
 </main>
 <div id="dfa-graph-comparison" class="flex justify-between w-full h-full border-2 border-indigo-200 rounded">
-	<div bind:this={dfaGraphContainer} class="w-1/2 h-1/2 border-0 border-green-600 rounded"></div>
-	<div bind:this={dfaMinGraphContainer} class="w-1/2 h-1/2 border-0 border-green-600 rounded"></div>
+	<div bind:this={dfaGraphContainer} class="w-1/2 h-5/6 border-0 border-green-600 rounded"></div>
+	<div bind:this={dfaMinGraphContainer} class="w-1/2 h-5/6border-0 border-green-600 rounded"></div>
 </div>
