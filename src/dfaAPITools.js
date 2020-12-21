@@ -1,4 +1,4 @@
-let API_URL = __app.env.isProd? __app.env.ENDPOINT : "http://localhost:8080";
+let API_URL = __app.env.isProd? __app.env.API_URL : "http://localhost:8080";
 
 function dfaToApiSchema(dfa) {
     return {
