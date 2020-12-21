@@ -1,4 +1,4 @@
-let baseUrl = __app.env.ENDPOINT ;
+let API_URL = __app.env.isProd? __app.env.ENDPOINT : "http://localhost:8080";
 
 function dfaToApiSchema(dfa) {
     return {
@@ -65,7 +65,7 @@ function convertTransitionsFromApiSchema(transitions, initialState, finalStates,
 function APIMinimize(dfa) {
     let dfaSchema = dfaToApiSchema(dfa);
     let dfaJson = JSON.stringify(dfaSchema);
-    let req = fetch(baseUrl, {
+    let req = fetch(`${API_URL}/minimize`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
