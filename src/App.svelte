@@ -57,7 +57,7 @@
 	}
 </script>
 
-<main class="flex justify-center">
+<main class="flex justify-center pt-4 mb-10">
 	<div>
 		<div class="">
 			{#each transitions as {q1, q2}, i}
@@ -74,6 +74,7 @@
 		<button on:click={minimize} class="bg-indigo-600 mt-4 rounded opacity-90 p-1">Minimizar!</button>
 	</div>
 </main>
+
 <div id="dfa-graph-comparison" class="flex justify-between w-full h-full border-2 border-indigo-200 rounded">
 	<div bind:this={dfaGraphContainer} class="w-1/2 h-5/6 border-0 border-green-600 rounded"></div>
 	<div bind:this={dfaMinGraphContainer} class="w-1/2 h-5/6border-0 border-green-600 rounded"></div>
