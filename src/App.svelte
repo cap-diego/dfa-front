@@ -57,6 +57,7 @@
 	}
 </script>
 
+
 <main class="flex justify-center pt-4 mb-10">
 	<div>
 		<div class="">
@@ -69,13 +70,31 @@
 				<br>
 			{/each}
 		</div>
-		
 		<button on:click={addTransition} class="bg-indigo-600 mt-4 rounded opacity-90 p-1">Nueva transición</button>
 		<button on:click={minimize} class="bg-indigo-600 mt-4 rounded opacity-90 p-1">Minimizar!</button>
 	</div>
 </main>
 
 <div id="dfa-graph-comparison" class="flex justify-between w-full h-full border-2 border-indigo-200 rounded">
-	<div bind:this={dfaGraphContainer} class="w-1/2 h-5/6 border-0 border-green-600 rounded"></div>
-	<div bind:this={dfaMinGraphContainer} class="w-1/2 h-5/6border-0 border-green-600 rounded"></div>
+	<div bind:this={dfaGraphContainer} class="w-1/2 h-1/2 border-0 border-green-600 rounded"></div>
+	<div bind:this={dfaMinGraphContainer} class="w-1/2 h-1/2 border-0 border-green-600 rounded"></div>
 </div>
+<footer class="space-y-4">
+	<div class="block">
+		<div class="flex justify-center items-center">
+			<a href="https://github.com/cap-diego/dfa-minimization-algorithm"><img src="/github-icon.png" class="icon" alt="github repo"></a> 
+			<small class="mx-2">Link al código</small>
+		</div>
+	</div>
+	<div class="block">
+		<small class="flex justify-center">Minimizador de AFD</small>
+	</div>
+</footer>
+
+<style>
+.icon {
+    height: 25px;
+    width: 25px;
+    display: block;
+}
+</style>
