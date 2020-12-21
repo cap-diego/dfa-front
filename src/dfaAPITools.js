@@ -1,16 +1,4 @@
-
-// Example of body
-// {
-//     "States":[0,1],
-//     "Alphabet":[0,1],
-//     "InitialState":1,
-//     "FinalStates":[0],
-//     "Delta":{
-//         "0":{"0":1,"1":0},
-//         "1":{"0":1,"1":0}
-//         }
-
-let baseUrl = `http://localhost:8080/minimize`
+let baseUrl = __app.env.ENDPOINT ;
 
 function dfaToApiSchema(dfa) {
     return {
