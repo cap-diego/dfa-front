@@ -34,7 +34,7 @@
 		}
 	}
 	async function minimize() {
-		if (!canAddTransition())
+		if (!canAddTransition() || loading)
 			return
 		dfa = obtenerDfa();
 		try {
