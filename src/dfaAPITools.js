@@ -1,5 +1,5 @@
-let API_URL = __app.env.isProd? __app.env.API_URL : "https://localhost";
-API_URL = __app.env.API_URL === undefined? "https://dfa-min.diegobuceta.com" : API_URL;
+const API_URL = "https://sqbkk9gmb0.execute-api.sa-east-1.amazonaws.com/default/dfa-min-lambda/";
+
 console.log(__app.env.isProd)
 console.log(__app.env.API_URL)
 console.log(API_URL);
@@ -69,7 +69,7 @@ function convertTransitionsFromApiSchema(transitions, initialState, finalStates,
 function APIMinimize(dfa) {
     let dfaSchema = dfaToApiSchema(dfa);
     let dfaJson = JSON.stringify(dfaSchema);
-    let req = fetch(`${API_URL}/minimize`, {
+    let req = fetch(API_URL, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
