@@ -12,7 +12,7 @@
 - npm run dev, para correr el proyecto con rollup. Ver opciones de puerto en caso de ser necesario.
 - npm run build, para buildear la version optimizada para prod.
 
-## La plataforma sobre la cuál está [deployado](dfa.diegobuceta.com) es Vercel.
+## La plataforma sobre la cuál está [deployado](https://dfa.diegobuceta.com) es Vercel.
 
 
 
